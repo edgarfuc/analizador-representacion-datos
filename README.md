@@ -168,5 +168,11 @@ Docker permite ejecutar la aplicación en un entorno aislado y controlar los rec
 
 La carpeta `Evidencias` contiene capturas de la aplicación, las conversiones numéricas, el análisis UTF-8, las pruebas automatizadas, la compilación de Docker, el consumo de recursos y los mensajes de validación.
 
+## Video de demostración
+
+En el siguiente enlace se presenta el funcionamiento de Analizador Digital, incluyendo las conversiones numéricas, el análisis de caracteres Unicode y UTF-8, las pruebas automatizadas y la ejecución con Docker.
+
+[Ver video de demostración](https://drive.google.com/file/d/1_UfU-OMccSb_j-C7wJVkS5IZonQWWLAE/view?usp=sharing)
+
 
 
