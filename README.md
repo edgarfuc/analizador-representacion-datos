@@ -4,7 +4,7 @@ Proyecto de Arquitectura de Computadoras: analizador de representación de datos
 
 
 
-\# Analizador de representación de datos
+# Analizador Digital
 
 
 
