@@ -1,0 +1,141 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analizador de representación de datos</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #101827;
+            color: #f3f4f6;
+            padding: 30px 16px;
+        }
+        main { max-width: 950px; margin: auto; }
+        h1 { color: #60a5fa; }
+        .panel {
+            background: #1e293b;
+            padding: 22px;
+            margin: 20px 0;
+            border-radius: 12px;
+        }
+        input, select, button {
+            padding: 11px;
+            margin: 6px 4px 6px 0;
+            border-radius: 6px;
+            border: 1px solid #64748b;
+            font-size: 15px;
+        }
+        input, select { max-width: 100%; }
+        button {
+            background: #2563eb;
+            color: white;
+            border: 0;
+            cursor: pointer;
+        }
+        button:hover { background: #1d4ed8; }
+        .resultado {
+            overflow-wrap: anywhere;
+            background: #0f172a;
+            padding: 12px;
+            border-radius: 6px;
+            margin-top: 8px;
+        }
+        .error { color: #fca5a5; font-weight: bold; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { border: 1px solid #475569; padding: 9px; text-align: left; }
+        th { background: #334155; }
+        .tabla { overflow-x: auto; }
+        label { display: inline-block; margin-top: 8px; }
+    </style>
+</head>
+<body>
+<main>
+    <h1>Analizador de representación de datos</h1>
+    <p>Conversión de bases numéricas y representación de caracteres Unicode y UTF-8.</p>
+
+    <section class="panel">
+        <h2>1. Conversión numérica</h2>
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="tipo" value="numero">
+            <label for="valor">Número:</label>
+            <input id="valor" name="valor" type="text" maxlength="32"
+                   placeholder="Ejemplo: 2AF" required>
+            <label for="base">Base de origen:</label>
+            <select id="base" name="base">
+                <option value="2">Binario (2)</option>
+                <option value="8">Octal (8)</option>
+                <option value="10" selected>Decimal (10)</option>
+                <option value="16">Hexadecimal (16)</option>
+            </select>
+            <button type="submit">Analizar número</button>
+        </form>
+
+        {% if error_numero %}
+            <p class="error">{{ error_numero }}</p>
+        {% endif %}
+
+        {% if numero %}
+            <h3>Resultados</h3>
+            <div class="resultado">Decimal: {{ numero.decimal }}</div>
+            <div class="resultado">Binario: {{ numero.binario }}</div>
+            <div class="resultado">Octal: {{ numero.octal }}</div>
+            <div class="resultado">Hexadecimal: {{ numero.hexadecimal }}</div>
+            <div class="resultado">Binario de 8 bits: {{ numero.binario_8 }}</div>
+            <div class="resultado">Binario de 16 bits: {{ numero.binario_16 }}</div>
+            <div class="resultado">Binario de 24 bits: {{ numero.binario_24 }}</div>
+            <div class="resultado">Binario de 64 bits: {{ numero.binario_64 }}</div>
+            <div class="resultado">Bits significativos: {{ numero.bits_significativos }}</div>
+            <div class="resultado">Bytes requeridos: {{ numero.bytes_requeridos }}</div>
+        {% endif %}
+    </section>
+
+    <section class="panel">
+        <h2>2. Análisis de texto y UTF-8</h2>
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="tipo" value="texto">
+            <label for="texto">Texto (máximo 20 caracteres):</label>
+            <input id="texto" name="texto" type="text" maxlength="20"
+                   placeholder="Ejemplo: Año" required>
+            <button type="submit">Analizar texto</button>
+        </form>
+
+        {% if error_texto %}
+            <p class="error">{{ error_texto }}</p>
+        {% endif %}
+
+        {% if caracteres %}
+            <div class="tabla">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Carácter</th>
+                            <th>Código decimal</th>
+                            <th>Unicode</th>
+                            <th>Hexadecimal</th>
+                            <th>Bytes UTF-8</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for c in caracteres %}
+                            <tr>
+                                <td>{{ c.caracter }}</td>
+                                <td>{{ c.decimal }}</td>
+                                <td>{{ c.unicode }}</td>
+                                <td>{{ c.hexadecimal }}</td>
+                                <td>{{ c.utf8 }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+    </section>
+</main>
+</body>
+</html>
